@@ -27,6 +27,12 @@
             <version>${mrunit.version}</version>
             <classifier>hadoop2</classifier>
             <optional>true</optional>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.mockito</groupId>
+                    <artifactId>mockito-core</artifactId>
+                </exclusion>
+            </exclusions>
             <!-- <scope>test</scope> -->
         </dependency>
         <dependency>

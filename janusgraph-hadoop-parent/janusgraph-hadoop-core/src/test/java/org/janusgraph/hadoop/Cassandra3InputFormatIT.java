@@ -26,7 +26,7 @@ public class Cassandra3InputFormatIT extends CassandraInputFormatIT {
 
     protected PropertiesConfiguration getGraphConfiguration() throws ConfigurationException, IOException {
         final PropertiesConfiguration config = super.getGraphConfiguration();
-        config.setProperty("gremlin.hadoop.graphInputFormat", "org.janusgraph.hadoop.formats.cassandra.Cassandra3InputFormat");
+        config.setProperty("gremlin.hadoop.graphReader", "org.janusgraph.hadoop.formats.cassandra.Cassandra3InputFormat");
         return config;
     }
 

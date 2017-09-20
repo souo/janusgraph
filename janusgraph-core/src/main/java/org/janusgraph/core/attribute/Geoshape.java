@@ -164,7 +164,7 @@ public class Geoshape {
      * @return
      */
     public String toGeoJson() {
-        return GeoshapeGsonSerializerV1d0.toGeoJson(this);
+        return GeoshapeGsonSerializerV2d0.toGeoJson(this);
     }
 
     public Map<String,Object> toMap() throws IOException {

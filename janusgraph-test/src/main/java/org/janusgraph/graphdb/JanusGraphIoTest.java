@@ -38,15 +38,16 @@ import org.janusgraph.core.schema.JanusGraphManagement;
 import org.janusgraph.example.GraphOfTheGodsFactory;
 import org.janusgraph.graphdb.tinkerpop.JanusGraphIoRegistry;
 import org.janusgraph.graphdb.tinkerpop.JanusGraphIoRegistryV1d0;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.Polygon;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 
 /**
  * Tests JanusGraph specific serialization classes not covered by the TinkerPop suite.
@@ -62,9 +63,10 @@ public abstract class JanusGraphIoTest extends JanusGraphBaseTest {
 
     @Parameterized.Parameters(name = "{0}")
     public static Iterable<Object[]> data() {
-        
+
         final GraphSONMapper v1mapper = GraphSONMapper.build().version(GraphSONVersion.V1_0).typeInfo(TypeInfo.PARTIAL_TYPES).addRegistry(JanusGraphIoRegistryV1d0.getInstance()).create();
         final GraphSONMapper v2mapper = GraphSONMapper.build().version(GraphSONVersion.V2_0).typeInfo(TypeInfo.PARTIAL_TYPES).addRegistry(JanusGraphIoRegistry.getInstance()).create();
+        final GraphSONMapper v3mapper = GraphSONMapper.build().version(GraphSONVersion.V3_0).typeInfo(TypeInfo.PARTIAL_TYPES).addRegistry(JanusGraphIoRegistry.getInstance()).create();
 
         return Arrays.asList(new Object[][]{
             {"graphson-v1-embedded",
@@ -73,6 +75,9 @@ public abstract class JanusGraphIoTest extends JanusGraphBaseTest {
             {"graphson-v2-embedded",
                 (Function<Graph, GraphReader>) g -> GraphSONReader.build().mapper(v2mapper).create(),
                 (Function<Graph, GraphWriter>) g -> GraphSONWriter.build().mapper(v2mapper).create()},
+            {"graphson-v3",
+                (Function<Graph, GraphReader>) g -> GraphSONReader.build().mapper(v3mapper).create(),
+                (Function<Graph, GraphWriter>) g -> GraphSONWriter.build().mapper(v3mapper).create()},
             {"gryo",
                 (Function<Graph, GraphReader>) g -> g.io(IoCore.gryo()).reader().mapper(g.io(IoCore.gryo()).mapper().create()).create(),
                 (Function<Graph, GraphWriter>) g -> g.io(IoCore.gryo()).writer().mapper(g.io(IoCore.gryo()).mapper().create()).create()}
@@ -168,16 +173,16 @@ public abstract class JanusGraphIoTest extends JanusGraphBaseTest {
         double x = Math.floor(place.getPoint().getLongitude());
         double y = Math.floor(place.getPoint().getLatitude());
         return HELPER.geoshape(GF.createMultiLineString(new LineString[] {
-                GF.createLineString(new Coordinate[] {new Coordinate(x,y), new Coordinate(x+1,y+1)}),
-                GF.createLineString(new Coordinate[] {new Coordinate(x-1,y-1), new Coordinate(x,y)})}));
+            GF.createLineString(new Coordinate[] {new Coordinate(x,y), new Coordinate(x+1,y+1)}),
+            GF.createLineString(new Coordinate[] {new Coordinate(x-1,y-1), new Coordinate(x,y)})}));
     };
 
     private static final Function<Geoshape,Geoshape> makeMultiPolygon = place -> {
         double x = Math.floor(place.getPoint().getLongitude());
         double y = Math.floor(place.getPoint().getLatitude());
         return HELPER.geoshape(GF.createMultiPolygon(new Polygon[] {
-                GF.createPolygon(new Coordinate[] {new Coordinate(x,y), new Coordinate(x+1,y), new Coordinate(x+1,y+1), new Coordinate(x,y)}),
-                GF.createPolygon(new Coordinate[] {new Coordinate(x+2,y+2), new Coordinate(x+2,y+3), new Coordinate(x+3,y+3), new Coordinate(x+2,y+2)})}));
+            GF.createPolygon(new Coordinate[] {new Coordinate(x,y), new Coordinate(x+1,y), new Coordinate(x+1,y+1), new Coordinate(x,y)}),
+            GF.createPolygon(new Coordinate[] {new Coordinate(x+2,y+2), new Coordinate(x+2,y+3), new Coordinate(x+3,y+3), new Coordinate(x+2,y+2)})}));
     };
 
 }
