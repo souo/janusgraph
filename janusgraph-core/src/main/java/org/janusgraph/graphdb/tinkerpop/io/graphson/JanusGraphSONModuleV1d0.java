@@ -24,9 +24,10 @@ public class JanusGraphSONModuleV1d0 extends JanusGraphSONModule {
 
     private JanusGraphSONModuleV1d0() {
         super();
-        addSerializer(RelationIdentifier.class, new RelationIdentifierSerializerV1d0());
         addSerializer(Geoshape.class, new Geoshape.GeoshapeGsonSerializerV1d0());
+
         addDeserializer(Geoshape.class, new Geoshape.GeoshapeGsonDeserializerV1d0());
+
     }
 
     private static final JanusGraphSONModuleV1d0 INSTANCE = new JanusGraphSONModuleV1d0();
